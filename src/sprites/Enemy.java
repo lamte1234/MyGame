@@ -35,7 +35,7 @@ public class Enemy implements GameEntity  {
 
         }
 
-        public Enemy(Pane layer, Image image,double x, double y, double velocity, double health){
+        public Enemy(Pane layer, Image image, double x, double y, double velocity, double health){
             this.layer = layer;
             this.image = image;
             this.velocity = velocity;
@@ -205,5 +205,15 @@ public class Enemy implements GameEntity  {
 
         public void getDamagedBy(Tower tower){
             this.health -= tower.getDamage();
+        }
+
+        public boolean contain(double x, double y){
+            if( x >= this.x + 16  && x <= this.x + 48){
+                if(y >= this.y + 16 && y <= this.y + 48){
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
         }
 }

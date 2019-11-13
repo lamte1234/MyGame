@@ -55,7 +55,7 @@ public class Properties {
     public static final int rocket1Gold = 400;
 
 
-    public static final int startingGold = 600;
+    public static final int startingGold = 5000;
 
 
     public static final int hearts = 20;

@@ -41,6 +41,7 @@ public class Game extends Application  {
 
     List<Enemy> enemies = new ArrayList<Enemy>();
     List<Tower> towers = new ArrayList<Tower>();
+    List<Bullet> bullets =new ArrayList<Bullet>();
 
     boolean[] checkTowerLocationHasTower = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
@@ -54,6 +55,7 @@ public class Game extends Application  {
 
     Image backgroundImage;
     Image cannonImage;
+    Image cannonBullet;
     Image rocketImage;
     Image soldierImage;
     Image tankImage;
@@ -146,12 +148,14 @@ public class Game extends Application  {
                     towers.forEach(tower -> tower.move());
 
                     enemies.forEach(enemy -> enemy.move());
+                    bullets.forEach(bullet -> bullet.move());
 
                     checkTowerAttack();// towers attack enemies
 
                     towers.forEach(tower -> tower.update());
 
                     enemies.forEach(enemy -> enemy.update());
+                    bullets.forEach(bullet -> bullet.update());
 
                     checkEnemyAtDefensePoint(enemies); // decrease lives
                     increaseGoldAndScore(enemies); // increase gold and score
@@ -182,6 +186,7 @@ public class Game extends Application  {
         tankImage = new Image(getClass().getResource("images/Tank1.png").toExternalForm());
         planeImage = new Image(getClass().getResource("images/Plane1.png").toExternalForm());
         cannonImage = new Image(getClass().getResource("images/CannonTower1.png").toExternalForm());
+        cannonBullet = new Image(getClass().getResource("images/CannonBullet.png").toExternalForm());
         rocketImage = new Image(getClass().getResource("images/MissileTower1.png").toExternalForm());
         winningImage = new Image(getClass().getResource("images/Victory.png").toExternalForm());
         losingImage = new Image(getClass().getResource("images/GameOver.png").toExternalForm());
@@ -340,13 +345,16 @@ public class Game extends Application  {
 
     private void createTowerLevel1(double x, double y){
         Image img = cannonImage;
+        Image bullet = cannonBullet;
 
         double xCode = x;
         double yCode = y;
 
         CannonTower cannonTower = new CannonTower(playFieldLayer, img, xCode, yCode, 0);
+        Bullet cannonBullet = new Bullet(playFieldLayer, bullet, 25, cannonTower);
 
         towers.add(cannonTower);
+        bullets.add(cannonBullet);
 
         this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
@@ -383,7 +391,7 @@ public class Game extends Application  {
     }
 
     private boolean checkWinningCondition(){
-        if(score >= 500){
+        if(wave[4]){
             return true;
         }
         else return false;
