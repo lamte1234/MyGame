@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
 public class RocketTower extends Tower {
-    Bullet bullet;
 
     public RocketTower(Pane layer, Image image, double x, double y, double rotation){
         super(layer, image, x, y, rotation);
@@ -15,8 +14,4 @@ public class RocketTower extends Tower {
         this.damage = Properties.rocketTower1Damage;
     }
 
-    @Override
-    public void addToLayer() {
-        super.addToLayer();
-    }
 }

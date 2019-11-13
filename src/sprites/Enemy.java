@@ -206,4 +206,14 @@ public class Enemy implements GameEntity  {
         public void getDamagedBy(Tower tower){
             this.health -= tower.getDamage();
         }
+
+        public boolean contain(double x, double y){
+            if( x >= this.x && x <= x + 64){
+                if(y >= y && y <= y + 64){
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
 }

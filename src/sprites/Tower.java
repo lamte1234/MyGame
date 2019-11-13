@@ -60,6 +60,10 @@ public class Tower implements GameEntity {
         this.layer.getChildren().add(this.imageView);
     }
 
+    public double getRange(){
+        return this.towerRange;
+    }
+
     public double getCenterX() {
         return this.x + this.width / 2;
     }
@@ -78,7 +82,7 @@ public class Tower implements GameEntity {
             double distanceX = target.getCenterX() - follower.getCenterX();
             double distanceY = target.getCenterY() - follower.getCenterY();
 
-            double angleToTarget = Math.atan2(distanceY, distanceX) + Math.PI / 2;
+            double angleToTarget = Math.atan2(distanceY, distanceX);
 
             double targetAngle = Math.toDegrees(angleToTarget);
             double currentAngle = follower.rotation;
