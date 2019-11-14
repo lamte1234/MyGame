@@ -148,14 +148,12 @@ public class Game extends Application  {
                     towers.forEach(tower -> tower.move());
 
                     enemies.forEach(enemy -> enemy.move());
-                    bullets.forEach(bullet -> bullet.move());
 
                     checkTowerAttack();// towers attack enemies
 
                     towers.forEach(tower -> tower.update());
 
                     enemies.forEach(enemy -> enemy.update());
-                    bullets.forEach(bullet -> bullet.update());
 
                     checkEnemyAtDefensePoint(enemies); // decrease lives
                     increaseGoldAndScore(enemies); // increase gold and score
@@ -345,16 +343,13 @@ public class Game extends Application  {
 
     private void createTowerLevel1(double x, double y){
         Image img = cannonImage;
-        Image bullet = cannonBullet;
 
         double xCode = x;
         double yCode = y;
 
         CannonTower cannonTower = new CannonTower(playFieldLayer, img, xCode, yCode, 0);
-        Bullet cannonBullet = new Bullet(playFieldLayer, bullet, 25, cannonTower);
 
         towers.add(cannonTower);
-        bullets.add(cannonBullet);
 
         this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }

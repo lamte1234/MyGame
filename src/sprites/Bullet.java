@@ -3,39 +3,36 @@ package sprites;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 
-
-public class Bullet implements GameEntity  {
+public class Bullet extends Pane implements GameEntity  {
     Tower firingTower;
 
-    Pane layer;
 
-    Image image;
-    ImageView imageView;
+    Circle bullet;
+    double radius;
 
     double x ;
     double y ;
 
     double velocity;
 
-    public Bullet(Pane layer, Image image, double velocity, Tower firingTower){
-        this.layer = layer;
-
-        this.image = image;
-        this.imageView = new ImageView(image);
-
-        this.firingTower = firingTower;
-
-
-        this.x  = firingTower.getCenterX() - image.getWidth() / 2 ;
-        this.y = firingTower.getCenterY()  - image.getHeight() / 2;
+    public Bullet(double radius,double velocity, Tower firingTower){
+        this.radius = radius;
 
         this.velocity = velocity;
 
-        this.imageView.relocate(x,y);
+        this.firingTower = firingTower;
 
-        this.layer.getChildren().add(imageView);
+        this.x = firingTower.getCenterX() - this.radius;
+        this.y = firingTower.getCenterY() - this.radius;
+        bullet = new Circle(x, y, radius);
+
+        bullet.setFill(Color.BLACK);
+
+        getChildren().add(bullet);
     }
 
     public boolean checkBulletCanReMove(){
@@ -54,40 +51,33 @@ public class Bullet implements GameEntity  {
             double difX = this.firingTower.getTarget().getCenterX() - this.firingTower.getCenterX();
             double difY = this.firingTower.getTarget().getCenterY() - this.firingTower.getCenterY();
 
-            double hypotenuse = Math.sqrt(Math.pow(difX, 2) + Math.pow(difY, 2));
+            double vel_x = difX / 5;
+            double vel_y = difY / 5;
 
-            double sin_a = difY / hypotenuse;
-            double cos_a = difX / hypotenuse;
-
-            double vel_x = velocity * cos_a;
-            double vel_y = velocity * sin_a;
-
-
+            x += vel_x;
+            y += vel_y;
             if(checkBulletCanReMove()){
-                x = firingTower.getCenterX() - image.getWidth() / 2;
-                y = firingTower.getCenterY()  - image.getHeight() / 2;
-            }
-            else {
-                x += vel_x;
-                y += vel_y;
+                x = firingTower.getCenterX() - this.radius;
+                y = firingTower.getCenterY()  - this.radius;
             }
         }
         else{
-            x = firingTower.getCenterX() - image.getWidth() / 2 ;
-            y = firingTower.getCenterY()  - image.getHeight() / 2;
+            x = firingTower.getCenterX() - this.radius;
+            y = firingTower.getCenterY() - this.radius;
         }
     }
 
     public void update(){
-        this.imageView.relocate(x, y);
+        this.bullet.relocate(x, y);
+
 
     }
 
     public double getCenterX(){
-        return x + this.image.getWidth() / 2;
+        return x + this.radius / 2;
     }
 
     public double getCenterY(){
-        return y + this.image.getHeight() / 2;
+        return y + this.radius / 2;
     }
 }
