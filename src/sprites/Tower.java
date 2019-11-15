@@ -20,7 +20,7 @@ public class Tower implements GameEntity {
     double x;
     double y;
 
-    double reserveVelocity;
+    double reverseVelocity;
     double rotation;
 
 
@@ -112,7 +112,7 @@ public class Tower implements GameEntity {
 
             angleDifferent = targetAngle - currentAngle;
 
-            currentAngle = currentAngle + angleDifferent / reserveVelocity;
+            currentAngle = currentAngle + angleDifferent / reverseVelocity;
 
             follower.rotation = currentAngle;
 

@@ -46,12 +46,12 @@ public class Properties {
 
     public static final double cannonTower1Range = 200;
     public static final double cannonTower1Damage = 1.0;
-    public static final double cannonTower1ReserveRotationVelocity = 10;
+    public static final double cannonTower1ReverseRotationVelocity = 10;
     public static final double cannon1Gold = 200;
 
     public static final double rocketTower1Range = 300;
     public static final double rocketTower1Damage = 2.0;
-    public static final double rocketTower1ReserveRotationVelocity = 10;
+    public static final double rocketTower1ReverseRotationVelocity = 10;
     public static final int rocket1Gold = 400;
 
 

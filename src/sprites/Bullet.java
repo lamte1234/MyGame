@@ -1,7 +1,6 @@
 package sprites;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -17,12 +16,12 @@ public class Bullet extends Pane implements GameEntity  {
     double x ;
     double y ;
 
-    double velocity;
+    double reverseVelocity;
 
-    public Bullet(double radius,double velocity, Tower firingTower){
+    public Bullet(double radius,double reverseVelocity, Color color, Tower firingTower){
         this.radius = radius;
 
-        this.velocity = velocity;
+        this.reverseVelocity = reverseVelocity;
 
         this.firingTower = firingTower;
 
@@ -30,20 +29,21 @@ public class Bullet extends Pane implements GameEntity  {
         this.y = firingTower.getCenterY() - this.radius;
         bullet = new Circle(x, y, radius);
 
-        bullet.setFill(Color.BLACK);
+        bullet.setFill(color);
 
         getChildren().add(bullet);
     }
 
     public boolean checkBulletCanReMove(){
-        double distanceGo = Math.sqrt(Math.pow(this.getCenterX() - this.firingTower.getCenterY(), 2) + Math.pow(this.getCenterY() - firingTower.getCenterY(), 2));
-        if(distanceGo >= firingTower.getRange()){
-            return true;
+        if(this.firingTower.getTarget() != null) {
+            double distanceGo = Math.sqrt(Math.pow(this.getCenterX() - this.firingTower.getCenterY(), 2) + Math.pow(this.getCenterY() - firingTower.getCenterY(), 2));
+            if (distanceGo >= firingTower.getRange()) {
+                return true;
+            } else if (this.firingTower.getTarget().contain(this.getCenterX(), this.getCenterY())) {
+                return true;
+            } else return false;
         }
-        else if(this.firingTower.getTarget().contain(this.getCenterX(), this.getCenterY())){
-            return true;
-        }
-        else return false;
+        else return true;
     }
 
     public void move(){
@@ -51,8 +51,8 @@ public class Bullet extends Pane implements GameEntity  {
             double difX = this.firingTower.getTarget().getCenterX() - this.firingTower.getCenterX();
             double difY = this.firingTower.getTarget().getCenterY() - this.firingTower.getCenterY();
 
-            double vel_x = difX / 5;
-            double vel_y = difY / 5;
+            double vel_x = difX / reverseVelocity;
+            double vel_y = difY / reverseVelocity;
 
             x += vel_x;
             y += vel_y;

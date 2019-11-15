@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3cf09ae1-c129-4891-9c85-01b48e0dfcfe" name="Default Changelist" comment="" />
+    <list default="true" id="3cf09ae1-c129-4891-9c85-01b48e0dfcfe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGame/gameProperties/Properties.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGame/gameProperties/Properties.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGame/sprites/Bullet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGame/sprites/Bullet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGame/sprites/CannonTower.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGame/sprites/CannonTower.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGame/sprites/RocketTower.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGame/sprites/RocketTower.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGame/sprites/Tower.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGame/sprites/Tower.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gameProperties/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameProperties/Properties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sprites/Bullet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sprites/Bullet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sprites/CannonTower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sprites/CannonTower.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sprites/RocketTower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sprites/RocketTower.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sprites/Tower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sprites/Tower.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
