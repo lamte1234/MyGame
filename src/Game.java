@@ -37,7 +37,6 @@ public class Game extends Application  {
     boolean check_2 = false;
 
 
-    Random rnd = new Random();
 
     List<Enemy> enemies = new ArrayList<Enemy>();
     List<Tower> towers = new ArrayList<Tower>();
@@ -54,12 +53,16 @@ public class Game extends Application  {
     Text UIText = new Text();
 
     Image backgroundImage;
+
     Image cannonImage;
-    Image cannonBullet;
     Image rocketImage;
+
     Image soldierImage;
     Image tankImage;
+    Image tank2Image;
     Image planeImage;
+    Image plane2Image;
+
     Image winningImage;
     Image losingImage;
 
@@ -180,12 +183,19 @@ public class Game extends Application  {
 
     private void loadGame() {
         backgroundImage = new Image(getClass().getResource("images/Background.png").toExternalForm());
+
         soldierImage = new Image(getClass().getResource("images/VietCongSoldier.png").toExternalForm());
+
         tankImage = new Image(getClass().getResource("images/Tank1.png").toExternalForm());
+        tank2Image = new Image(getClass().getResource("images/Tank2.png").toExternalForm());
+
         planeImage = new Image(getClass().getResource("images/Plane1.png").toExternalForm());
+        plane2Image = new Image(getClass().getResource("images/Plane2.png").toExternalForm());
+
         cannonImage = new Image(getClass().getResource("images/CannonTower1.png").toExternalForm());
-        cannonBullet = new Image(getClass().getResource("images/CannonBullet.png").toExternalForm());
+
         rocketImage = new Image(getClass().getResource("images/MissileTower1.png").toExternalForm());
+
         winningImage = new Image(getClass().getResource("images/Victory.png").toExternalForm());
         losingImage = new Image(getClass().getResource("images/GameOver.png").toExternalForm());
      }
@@ -245,16 +255,21 @@ public class Game extends Application  {
     }
 
 
+    int a = 50;
     private void spawnEnemies() {
-        if (speed <= 50) {
+        if (speed <= a) {
             speed++;
             return;
         }
+        a = 50;
         speed = 0;
-        int randomNumber = rnd.nextInt(99);
+
         Image img1 = soldierImage;
         Image img2 = tankImage;
+        Image img4 = tank2Image;
         Image img3 = planeImage;
+        Image img5 = plane2Image;
+
         // Wave 1
         if (wave[0]) {
             dem++;
@@ -264,48 +279,112 @@ public class Game extends Application  {
                 wave[0] = false;
                 wave[1] = true;
                 waves++;
+                dem = 0;
+                a = 300;
             }
         }
 
         // Wave 2
-        if (wave[1]) {
+        if (wave[1] && a == 50) {
             dem++;
-            if (randomNumber >= 0 && randomNumber < 80) {
+            if (dem >= 0 && dem < 10) {
                 Soldier soldier = new Soldier(playFieldLayer, img1, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.soldierVelocity, Properties.soldierMaxHealth);
                 enemies.add(soldier);
             }
-            if (randomNumber >= 80 && randomNumber <= 99) {
+            if (dem >= 10 && dem < 15) {
                 Tank tank = new Tank(playFieldLayer, img2, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.tankVelocity, Properties.tankMaxHealth);
                 enemies.add(tank);
             }
-            if (dem >= 30) {
+            if (dem >= 15) {
                 wave[1] = false;
                 wave[2] = true;
                 waves++;
+                dem = 0;
+                a = 300;
             }
         }
 
         // Wave 3
-        if (wave[2]) {
+        if (wave[2]&& a == 50) {
             dem++;
-            if (randomNumber >= 0 && randomNumber < 60) {
+            if (dem >= 0 && dem < 10) {
                 Soldier soldier = new Soldier(playFieldLayer, img1, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.soldierVelocity, Properties.soldierMaxHealth);
                 enemies.add(soldier);
             }
-            if (randomNumber >= 60 && randomNumber < 85) {
+            if (dem >= 10 && dem < 20) {
                 Tank tank = new Tank(playFieldLayer, img2, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.tankVelocity, Properties.tankMaxHealth);
                 enemies.add(tank);
             }
-            if (randomNumber >= 85 && randomNumber <= 99) {
+            if (dem >= 20 && dem < 30) {
                 Plane plane = new Plane(playFieldLayer, img3, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.planeVelocity, Properties.planeMaxHealth);
                 enemies.add(plane);
             }
-            if (dem >= 60) {
+            if (dem >= 30) {
                 wave[2] = false;
                 wave[3] = true;
                 waves++;
+                dem = 0;
+                a = 300;
             }
         }
+        // wave 4
+        if (wave[3]&& a == 50) {
+            dem++;
+            if (dem >= 0 && dem < 10) {
+                Soldier soldier = new Soldier(playFieldLayer, img1, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.soldierVelocity, Properties.soldierMaxHealth);
+                enemies.add(soldier);
+            }
+            if (dem >= 10 && dem < 20) {
+                Tank tank = new Tank(playFieldLayer, img2, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.tankVelocity, Properties.tankMaxHealth);
+                enemies.add(tank);
+            }
+            if (dem >= 20 && dem < 30) {
+                Plane plane = new Plane(playFieldLayer, img3, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.planeVelocity, Properties.planeMaxHealth);
+                enemies.add(plane);
+            }
+            if (dem >= 30 && dem < 40) {
+                Tank tank2 = new Tank(playFieldLayer, img4, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.tank2Velocity, Properties.tank2MaxHealth);
+                enemies.add(tank2);
+            }
+            if (dem >= 40) {
+                wave[3] = false;
+                wave[4] = true;
+                waves++;
+                dem = 0;
+                a = 300;
+            }
+        }
+
+        // wave 5
+        if (wave[4] && a == 50) {
+            dem++;
+            if (dem >= 0 && dem < 10) {
+                Soldier soldier = new Soldier(playFieldLayer, img1, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.soldierVelocity, Properties.soldierMaxHealth);
+                enemies.add(soldier);
+            }
+            if (dem >= 10 && dem < 20) {
+                Tank tank = new Tank(playFieldLayer, img2, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.tankVelocity, Properties.tankMaxHealth);
+                enemies.add(tank);
+            }
+            if (dem >= 20 && dem < 30) {
+                Plane plane = new Plane(playFieldLayer, img3, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.planeVelocity, Properties.planeMaxHealth);
+                enemies.add(plane);
+            }
+            if (dem >= 30 && dem < 40) {
+                Tank tank2 = new Tank(playFieldLayer, img4, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.tank2Velocity, Properties.tank2MaxHealth);
+                enemies.add(tank2);
+            }
+            if (dem >= 40 && dem < 50) {
+                Plane plane2 = new Plane(playFieldLayer, img5, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.plane2Velocity, Properties.plane2MaxHealth);
+                enemies.add(plane2);
+            }
+            if (dem >= 50) {
+                wave[3] = false;
+                wave[4] = true;
+                waves++;
+            }
+        }
+
     }
 
 
@@ -386,7 +465,7 @@ public class Game extends Application  {
     }
 
     private boolean checkWinningCondition(){
-        if(wave[4]){
+        if(this.score == 276){
             return true;
         }
         else return false;

@@ -21,9 +21,13 @@ public class Properties {
 
     public static final double tankMaxHealth = 435;
     public static final double tankVelocity = 1.0;
+    public static final double tank2MaxHealth = 435*2;
+    public static final double tank2Velocity = 1.0;
 
     public static final double planeMaxHealth = 260;
     public static final double planeVelocity = 4.0;
+    public static final double plane2MaxHealth = 260*2;
+    public static final double plane2Velocity = 4.0;
 
     public static final double towerLocation[][] = {{3 * 64 , 9 * 64},
                                                     {4 * 64, 9 * 64},
@@ -60,10 +64,6 @@ public class Properties {
 
     public static final int hearts = 20;
 
-    public static final int waves[][] = {{23, 0, 0},
-                                         {18, 5, 0},
-                                         {15, 5, 3},
-                                         {10, 8, 5},
-                                         {5, 10, 8}};
+
 
 }

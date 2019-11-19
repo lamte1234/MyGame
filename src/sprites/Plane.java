@@ -1,6 +1,5 @@
 package sprites;
 
-import gameProperties.Properties;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -10,10 +9,13 @@ import javafx.scene.layout.Pane;
 public class Plane extends Enemy {
     HealthBar healthBar;
 
+    double maxHealth;
 
 
     public Plane(Pane layer, Image image,double x, double y, double velocity, double health)  {
         super(layer, image, x, y, velocity, health);
+
+        this.maxHealth = health;
 
         this.killingScore = 3;
         this.killingGold = 80;
@@ -37,7 +39,7 @@ public class Plane extends Enemy {
     }
 
     public double getRelativeHealth(){
-        return getHealth() / Properties.planeMaxHealth;
+        return getHealth() / this.maxHealth;
     }
 
     public void update() {

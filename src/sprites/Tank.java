@@ -12,10 +12,12 @@ public class Tank extends Enemy {
 
     HealthBar healthBar;
 
-
+    double maxHealth;
 
     public Tank(Pane layer, Image image,double x, double y, double velocity, double health)  {
         super(layer, image, x, y, velocity, health);
+
+        this.maxHealth = health;
 
         this.killingScore = 2;
         this.killingGold = 50;
@@ -39,7 +41,7 @@ public class Tank extends Enemy {
     }
 
     public double getRelativeHealth(){
-        return getHealth() / Properties.tankMaxHealth;
+        return getHealth() / this.maxHealth;
     }
 
     public void update() {
