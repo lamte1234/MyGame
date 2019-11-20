@@ -5,31 +5,25 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public class RocketTower extends Tower {
+public class RocketTower_2 extends Tower {
 
     Bullet rocketBullet;
 
-    public RocketTower(Pane layer, Image image, double x, double y, double rotation){
+    public RocketTower_2(Pane layer, Image image, double x, double y, double rotation){
         super(layer, image, x, y, rotation);
 
-        this.reverseVelocity = Properties.rocketTower1ReverseRotationVelocity;
-        this.towerRange = Properties.rocketTower1Range;
-        this.damage = Properties.rocketTower1Damage;
+        this.reverseVelocity = Properties.rocketTower2ReverseRotationVelocity;
+        this.towerRange = Properties.rocketTower2Range;
+        this.damage = Properties.rocketTower2Damage;
     }
 
     @Override
     public void addToLayer() {
         super.addToLayer();
 
-        rocketBullet = new Bullet(5, 15, Color.WHITE, this);
+        rocketBullet = new Bullet(5, 15, Color.RED, this);
 
         this.layer.getChildren().add(rocketBullet);
-    }
-
-    public void removeFromLayer(){
-        super.removeFromLayer();
-
-        this.layer.getChildren().remove(rocketBullet);
     }
 
     public void move(){

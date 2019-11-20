@@ -6,32 +6,25 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
-public class CannonTower extends Tower {
-
+public class CannonTower_2 extends Tower{
     Bullet cannonBullet;
 
 
-    public CannonTower(Pane layer, Image image, double x, double y, double rotation){
+    public CannonTower_2(Pane layer, Image image, double x, double y, double rotation){
         super(layer, image, x, y, rotation);
 
-        this.reverseVelocity = Properties.cannonTower1ReverseRotationVelocity;
-        this.towerRange = Properties.cannonTower1Range;
-        this.damage = Properties.cannonTower1Damage;
+        this.reverseVelocity = Properties.cannonTower2ReverseRotationVelocity;
+        this.towerRange = Properties.cannonTower2Range;
+        this.damage = Properties.cannonTower2Damage;
     }
 
     @Override
     public void addToLayer() {
         super.addToLayer();
 
-        cannonBullet = new Bullet(3, 3, Color.BLACK, this);
+        cannonBullet = new Bullet(4, 4, Color.GOLD, this);
 
         this.layer.getChildren().add(cannonBullet);
-    }
-
-    public void removeFromLayer(){
-        super.removeFromLayer();
-
-        this.layer.getChildren().remove(cannonBullet);
     }
 
     public void move(){

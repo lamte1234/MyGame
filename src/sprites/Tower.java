@@ -60,6 +60,10 @@ public class Tower implements GameEntity {
         this.layer.getChildren().add(this.imageView);
     }
 
+    public void removeFromLayer(){
+        this.layer.getChildren().remove(this.imageView);
+    }
+
     public double getRange(){
         return this.towerRange;
     }

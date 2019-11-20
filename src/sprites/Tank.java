@@ -1,6 +1,5 @@
 package sprites;
 
-import gameProperties.Properties;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 

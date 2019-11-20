@@ -18,7 +18,7 @@ import sprites.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+
 
 public class Game extends Application  {
     private double width = 1280 + 68;
@@ -35,14 +35,17 @@ public class Game extends Application  {
 
     boolean check_1 = false;
     boolean check_2 = false;
-
+    boolean check_3 = false;
+    boolean check_4 = false;
 
 
     List<Enemy> enemies = new ArrayList<Enemy>();
     List<Tower> towers = new ArrayList<Tower>();
-    List<Bullet> bullets =new ArrayList<Bullet>();
+
 
     boolean[] checkTowerLocationHasTower = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    boolean[] checkTowerLocationHasTower1 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    boolean[] checkTowerLocationHasTower2 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
     Pane backgroundLayer;
     Pane playFieldLayer;
@@ -55,7 +58,9 @@ public class Game extends Application  {
     Image backgroundImage;
 
     Image cannonImage;
+    Image cannon2Image;
     Image rocketImage;
+    Image rocket2Image;
 
     Image soldierImage;
     Image tankImage;
@@ -95,22 +100,55 @@ public class Game extends Application  {
             double y = e.getY();
             if (x >= 1285 && x <= 1341 && y >= 93 && y <= 147){
                 check_1 = true;
+                check_2 = false;
+                check_3 = false;
+                check_4 = false;
             }
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon1Gold && check_1  && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
+            else if (x >= 1285 && x <= 1341 && y >= 182 && y <= 240){
+                check_2 = true;
+                check_1 = false;
+                check_3 = false;
+                check_4 = false;
+            }
+            else if (x >= 1285 && x <= 1341 && y >= 269 && y <= 334){
+                check_3 = true;
+                check_1 = false;
+                check_2 = false;
+                check_4 = false;
+            }
+            else if (x >= 1285 && x <= 1341 && y >= 366 && y <= 427){
+                check_4 = true;
+                check_1 = false;
+                check_2 = false;
+                check_3 = false;
+            }
+
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon1Gold && check_1  && !checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)]) {
                 createTowerLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
                 gold -= Properties.cannon1Gold;
                 check_1 = false;
-                checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+                checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
             }
 
-            if (x >= 1285 && x <= 1341 && y >= 182 && y <= 240){
-                check_2 = true;
-            }
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket1Gold && check_2 && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket1Gold && check_2 && !checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)]) {
                 createRocketLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
                 gold -= Properties.rocket1Gold;
                 check_2 = false;
-                checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+                checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+            }
+
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon2Gold && check_3  && checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)]) {
+                createTowerLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
+                gold -= Properties.cannon2Gold;
+                check_3 = false;
+                checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+            }
+
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket2Gold && check_4 && checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)]) {
+                createRocketLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
+                gold -= Properties.rocket2Gold;
+                check_4 = false;
+                checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)] = true;
             }
         });
 
@@ -193,8 +231,9 @@ public class Game extends Application  {
         plane2Image = new Image(getClass().getResource("images/Plane2.png").toExternalForm());
 
         cannonImage = new Image(getClass().getResource("images/CannonTower1.png").toExternalForm());
-
+        cannon2Image = new Image(getClass().getResource("images/CannonTower2.png").toExternalForm());
         rocketImage = new Image(getClass().getResource("images/MissileTower1.png").toExternalForm());
+        rocket2Image = new Image(getClass().getResource("images/MissileTower2.png").toExternalForm());
 
         winningImage = new Image(getClass().getResource("images/Victory.png").toExternalForm());
         losingImage = new Image(getClass().getResource("images/GameOver.png").toExternalForm());
@@ -433,6 +472,19 @@ public class Game extends Application  {
         this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
 
+    private void createTowerLevel2(double x, double y){
+        Image img = cannon2Image;
+
+        double xCode = x;
+        double yCode = y;
+
+        CannonTower_2 cannonTower2 = new CannonTower_2(playFieldLayer, img, xCode, yCode, 0);
+
+        towers.add(cannonTower2);
+
+        this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+    }
+
     private void createRocketLevel1(double x, double y){
         double xCode = x;
         double yCode = y;
@@ -441,6 +493,16 @@ public class Game extends Application  {
         RocketTower rocketTower = new RocketTower(playFieldLayer, img, xCode, yCode, 0);
 
         towers.add(rocketTower);
+    }
+
+    private void createRocketLevel2(double x, double y){
+        double xCode = x;
+        double yCode = y;
+        Image img = rocket2Image;
+
+        RocketTower_2 rocketTower2 = new RocketTower_2(playFieldLayer, img, xCode, yCode, 0);
+
+        towers.add(rocketTower2);
     }
 
     private void checkEnemyAtDefensePoint(List<Enemy> enemies){
