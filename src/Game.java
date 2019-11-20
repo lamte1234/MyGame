@@ -44,8 +44,8 @@ public class Game extends Application  {
 
 
     boolean[] checkTowerLocationHasTower = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    boolean[] checkTowerLocationHasTower1 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    boolean[] checkTowerLocationHasTower2 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    boolean[] checkTowerLocationHasCannonTowerLevel1 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    boolean[] checkTowerLocationHasRocketTowerLevel1 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
     Pane backgroundLayer;
     Pane playFieldLayer;
@@ -123,32 +123,28 @@ public class Game extends Application  {
                 check_3 = false;
             }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon1Gold && check_1  && !checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)]) {
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon1Gold && check_1  && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
                 createTowerLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
                 gold -= Properties.cannon1Gold;
                 check_1 = false;
-                checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
             }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket1Gold && check_2 && !checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)]) {
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket1Gold && check_2 && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
                 createRocketLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
                 gold -= Properties.rocket1Gold;
                 check_2 = false;
-                checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)] = true;
             }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon2Gold && check_3  && checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)]) {
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon2Gold && check_3  && checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)]) {
                 createTowerLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
                 gold -= Properties.cannon2Gold;
                 check_3 = false;
-                checkTowerLocationHasTower1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
             }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket2Gold && check_4 && checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)]) {
+            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket2Gold && check_4 && checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)]) {
                 createRocketLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
                 gold -= Properties.rocket2Gold;
                 check_4 = false;
-                checkTowerLocationHasTower2[returnTowerLocation(x, y, Properties.towerLocation)] = true;
             }
         });
 
@@ -470,6 +466,7 @@ public class Game extends Application  {
         towers.add(cannonTower);
 
         this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+        this.checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
 
     private void createTowerLevel2(double x, double y){
@@ -478,11 +475,12 @@ public class Game extends Application  {
         double xCode = x;
         double yCode = y;
 
+
         CannonTower_2 cannonTower2 = new CannonTower_2(playFieldLayer, img, xCode, yCode, 0);
+
 
         towers.add(cannonTower2);
 
-        this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
 
     private void createRocketLevel1(double x, double y){
@@ -493,6 +491,9 @@ public class Game extends Application  {
         RocketTower rocketTower = new RocketTower(playFieldLayer, img, xCode, yCode, 0);
 
         towers.add(rocketTower);
+
+        this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+        this.checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
 
     private void createRocketLevel2(double x, double y){
@@ -514,7 +515,8 @@ public class Game extends Application  {
     }
 
     private void updateUI(){
-        UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(waves + 1));
+        if (waves < 5) UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(waves + 1));
+        if (waves >= 5) UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(5));
     }
 
     private void increaseGoldAndScore(List<Enemy> enemies){
@@ -527,7 +529,7 @@ public class Game extends Application  {
     }
 
     private boolean checkWinningCondition(){
-        if(this.score == 276){
+        if(waves == 20){
             return true;
         }
         else return false;
