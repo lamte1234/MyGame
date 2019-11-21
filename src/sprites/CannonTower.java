@@ -45,4 +45,12 @@ public class CannonTower extends Tower {
 
         this.cannonBullet.update();
     }
+
+    public Bullet getCannonBullet(){
+        return this.cannonBullet;
+    }
+
+    public void setBulletColor(Color color){
+        this.cannonBullet.setColor(color);
+    }
 }

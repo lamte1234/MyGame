@@ -80,4 +80,13 @@ public class Bullet extends Pane implements GameEntity  {
     public double getCenterY(){
         return y + this.radius / 2;
     }
+
+    public void setColor(Color color){
+        getChildren().remove(bullet);
+
+        bullet.setFill(color);
+
+        getChildren().add(bullet);
+
+    }
 }

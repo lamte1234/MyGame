@@ -43,4 +43,8 @@ public class RocketTower extends Tower {
 
         this.rocketBullet.update();
     }
+
+    public void setBulletColor(Color color){
+        this.rocketBullet.setColor(color);
+    }
 }

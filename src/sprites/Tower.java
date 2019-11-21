@@ -3,10 +3,11 @@ package sprites;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
-public class Tower implements GameEntity {
+public abstract class Tower implements GameEntity {
 
     Enemy target;
 
@@ -14,7 +15,6 @@ public class Tower implements GameEntity {
     ImageView imageView;
 
     Pane layer;
-
 
 
     double x;
@@ -36,6 +36,8 @@ public class Tower implements GameEntity {
 
     double towerRange ;
     boolean withinFiringRange = false;
+
+    boolean removable = false;
 
     public Tower(Pane layer, Image image, double x, double y, double rotation) {
         this.layer = layer;
@@ -63,6 +65,26 @@ public class Tower implements GameEntity {
     public void removeFromLayer(){
         this.layer.getChildren().remove(this.imageView);
     }
+
+    public void setDamage(double damage){
+        this.damage = damage;
+    }
+
+    public void setImage(Image image){
+        this.layer.getChildren().remove(imageView);
+
+        this.image = image;
+        this.imageView = new ImageView(image);
+
+        this.imageView.relocate(x, y);
+        this.layer.getChildren().add(imageView);
+
+    }
+
+    public void setRange(double range){
+        this.towerRange = range;
+    }
+
 
     public double getRange(){
         return this.towerRange;
@@ -229,4 +251,14 @@ public class Tower implements GameEntity {
             return 0;
         }
     }
+
+    public boolean isRemovable(){
+        return this.removable;
+    }
+
+    public void setRemovable(boolean removable){
+        this.removable = removable;
+    }
+
+    public abstract void setBulletColor(Color color);
 }

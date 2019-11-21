@@ -290,6 +290,7 @@ public class Game extends Application  {
     }
 
 
+
     int a = 50;
     private void spawnEnemies() {
         if (speed <= a) {
@@ -465,6 +466,7 @@ public class Game extends Application  {
 
         towers.add(cannonTower);
 
+        // new
         this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
         this.checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
@@ -475,11 +477,15 @@ public class Game extends Application  {
         double xCode = x;
         double yCode = y;
 
-
-        CannonTower_2 cannonTower2 = new CannonTower_2(playFieldLayer, img, xCode, yCode, 0);
-
-
-        towers.add(cannonTower2);
+        //new
+        for(Tower tower : towers){
+            if(tower.getCenterX() == xCode + 32 && tower.getCenterY() == yCode + 32){
+                tower.setDamage(Properties.cannonTower2Damage);
+                tower.setRange(Properties.cannonTower2Range);
+                tower.setImage(img);
+                tower.setBulletColor(Color.GOLD);
+            }
+        }
 
     }
 
@@ -492,6 +498,7 @@ public class Game extends Application  {
 
         towers.add(rocketTower);
 
+        //new
         this.checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
         this.checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
@@ -501,9 +508,15 @@ public class Game extends Application  {
         double yCode = y;
         Image img = rocket2Image;
 
-        RocketTower_2 rocketTower2 = new RocketTower_2(playFieldLayer, img, xCode, yCode, 0);
-
-        towers.add(rocketTower2);
+        // new
+        for(Tower tower : towers){
+            if(tower.getCenterX() == xCode + 32 && tower.getCenterY() == yCode + 32){
+                tower.setDamage(Properties.rocketTower2Damage);
+                tower.setRange(Properties.rocketTower2Range);
+                tower.setImage(img);
+                tower.setBulletColor(Color.RED);
+            }
+        }
     }
 
     private void checkEnemyAtDefensePoint(List<Enemy> enemies){
