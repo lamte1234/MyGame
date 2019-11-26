@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -20,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Game extends Application  {
+public class Game extends Application {
     private double width = 1280 + 68;
     private double height = 768;
 
@@ -47,15 +50,22 @@ public class Game extends Application  {
     boolean[] checkTowerLocationHasCannonTowerLevel1 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
     boolean[] checkTowerLocationHasRocketTowerLevel1 = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
+    Pane screenLayer;
     Pane backgroundLayer;
     Pane playFieldLayer;
     Pane UILayer;
+
+    Pane pauseGameLayer;
+    Pane pauseLayer;
+
     Pane win;
     Pane lose;
 
     Text UIText = new Text();
 
+    Image screenImage;
     Image backgroundImage;
+    Image pauseImage;
 
     Image cannonImage;
     Image cannon2Image;
@@ -72,98 +82,153 @@ public class Game extends Application  {
     Image losingImage;
 
 
-    Scene scene1,scene2,scene3;
+    Scene scene0, scene1, scene2, scene3, scene4;
     Stage window;
+
+    boolean start = false;
+    boolean pause = false;
+    boolean overMedia = true;
+    int i = 0;
+
+    Thread thread = new Thread();
 
 
     @Override
     public void start(Stage stage) throws Exception {
         Group root = new Group();
+        Group pauseG = new Group();
+
         window = stage;
 
+//        screenLayer = new Pane();
         backgroundLayer = new Pane();
         playFieldLayer = new Pane();
         UILayer = new Pane();
+
+        pauseGameLayer = new Pane();
+        pauseLayer = new Pane();
+
         win = new Pane();
         lose = new Pane();
 
+        // man hinh
+        Media media = new Media(getClass().getResource("images/Loading.mp4").toExternalForm());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        MediaView mediaView = new MediaView(mediaPlayer);
 
+        // nhac nen
+        Media music = new Media(getClass().getResource("images/nhacgame.mp4").toExternalForm());
+        MediaPlayer musicPlayer = new MediaPlayer(music);
+        MediaView musicView = new MediaView(musicPlayer);
+
+        root.getChildren().add(mediaView);
         root.getChildren().add(backgroundLayer);
         root.getChildren().add(playFieldLayer);
         root.getChildren().add(UILayer);
 
-
         playFieldLayer.setPrefSize(this.width, this.height);
-
         playFieldLayer.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
             double x = e.getX();
             double y = e.getY();
-            if (x >= 1285 && x <= 1341 && y >= 93 && y <= 147){
-                check_1 = true;
-                check_2 = false;
-                check_3 = false;
-                check_4 = false;
-            }
-            else if (x >= 1285 && x <= 1341 && y >= 182 && y <= 240){
-                check_2 = true;
-                check_1 = false;
-                check_3 = false;
-                check_4 = false;
-            }
-            else if (x >= 1285 && x <= 1341 && y >= 269 && y <= 334){
-                check_3 = true;
-                check_1 = false;
-                check_2 = false;
-                check_4 = false;
-            }
-            else if (x >= 1285 && x <= 1341 && y >= 366 && y <= 427){
-                check_4 = true;
-                check_1 = false;
-                check_2 = false;
-                check_3 = false;
+            // start game
+
+            if (!start) {
+                // new game
+                if (x >= 454 && x <= 895 && y >= 537 && y <= 580) {
+                    i = 0;
+                    start = true;
+                }
+                // exit game
+                if (x >= 454 && x <= 895 && y >= 598 && y <= 641) {
+                    System.exit(0);
+                }
             }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon1Gold && check_1  && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
-                createTowerLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
-                gold -= Properties.cannon1Gold;
-                check_1 = false;
-            }
+            if (start) {
+                // pause game
+                if (x >= 1285 && x <= 1341 && y >= 706 && y <= 764) {
+                    i = 10;
+                    pause = true;
+                }
+                if (pause) {
+                    if (x >= 454 && x <= 895 && y >= 537 && y <= 580) {
+                        i = 20;
+                        pause = false;
+                    }
+                    // exit game
+                    if (x >= 454 && x <= 895 && y >= 598 && y <= 641) {
+                        System.exit(0);
+                    }
+                }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket1Gold && check_2 && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
-                createRocketLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
-                gold -= Properties.rocket1Gold;
-                check_2 = false;
-            }
+                // đặt tháp
+                if (x >= 1285 && x <= 1341 && y >= 93 && y <= 147) {
+                    check_1 = true;
+                    check_2 = false;
+                    check_3 = false;
+                    check_4 = false;
+                } else if (x >= 1285 && x <= 1341 && y >= 182 && y <= 240) {
+                    check_2 = true;
+                    check_1 = false;
+                    check_3 = false;
+                    check_4 = false;
+                } else if (x >= 1285 && x <= 1341 && y >= 269 && y <= 334) {
+                    check_3 = true;
+                    check_1 = false;
+                    check_2 = false;
+                    check_4 = false;
+                } else if (x >= 1285 && x <= 1341 && y >= 366 && y <= 427) {
+                    check_4 = true;
+                    check_1 = false;
+                    check_2 = false;
+                    check_3 = false;
+                }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon2Gold && check_3  && checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)]) {
-                createTowerLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
-                gold -= Properties.cannon2Gold;
-                check_3 = false;
-            }
+                if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon1Gold && check_1 && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
+                    createTowerLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
+                    gold -= Properties.cannon1Gold;
+                    check_1 = false;
+                    checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+                    checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+                }
 
-            if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket2Gold && check_4 && checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)]) {
-                createRocketLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
-                gold -= Properties.rocket2Gold;
-                check_4 = false;
+                if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket1Gold && check_2 && !checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)]) {
+                    createRocketLevel1(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
+                    gold -= Properties.rocket1Gold;
+                    check_2 = false;
+                    checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+                    checkTowerLocationHasTower[returnTowerLocation(x, y, Properties.towerLocation)] = true;
+                }
+
+                if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.cannon2Gold && check_3 && checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)]) {
+                    createCannonLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
+                    gold -= Properties.cannon2Gold;
+                    check_3 = false;
+                    checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = false;
+                }
+
+                if (checkTowerLocation(x, y, Properties.towerLocation) && gold >= Properties.rocket2Gold && check_4 && checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)]) {
+                    createRocketLevel2(Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][0], Properties.towerLocation[returnTowerLocation(x, y, Properties.towerLocation)][1]);
+                    gold -= Properties.rocket2Gold;
+                    check_4 = false;
+                    checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = false;
+                }
             }
         });
 
-
-        scene1 = new Scene(root, this.width, this.height);
-
+        stage.setResizable(false);
         window.setTitle("TowerDefense");
-        window.setScene(scene1);
+
+        scene0 = new Scene(root, this.width, this.height);
+        window.setScene(scene0);
         window.show();
-
-
 
         loadGame();
 
-        // createStartScreen();
-        // thread.sleep(2000);
 
         ImageView winningImgView = new ImageView(winningImage);
         ImageView losingImgView = new ImageView(losingImage);
+
 
         win.getChildren().add(winningImgView);
         lose.getChildren().add(losingImgView);
@@ -171,13 +236,40 @@ public class Game extends Application  {
         scene2 = new Scene(win, this.width, this.height);
         scene3 = new Scene(lose, this.width, this.height);
 
-        createBackgroundLayer();
-        createPlayerLayer();
-        createUILayer();
+        mediaPlayer.play();
+
 
         AnimationTimer gameLoop = new AnimationTimer() {
-                @Override
-                public void handle(long l) {
+            @Override
+            public void handle(long l) {
+                if (start && i == 0) {
+                    i++;
+                    createBackgroundLayer();
+                    createUILayer();
+                    createPlayerLayer();
+
+                    try {
+                        thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (pause && i == 10) {
+                    i++;
+                    createPauseScreen();
+                }
+                if (!pause && i == 20) {
+                    i++;
+                    try {
+                        thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    createBackgroundLayer();
+                }
+                if (!pause && start) {
+                    if (!checkWinningCondition() && !checkLosingCondition()) musicPlayer.setAutoPlay(true);
+
                     spawnEnemies();
 
                     towers.forEach(tower -> tower.checkTarget());
@@ -199,24 +291,27 @@ public class Game extends Application  {
 
                     updateUI();
 
-                    if(checkWinningCondition()){
+                    if (checkWinningCondition()) {
                         window.setScene(scene2);
                         stop();
                     }
 
-                    if(checkLosingCondition()){
+                    if (checkLosingCondition()) {
                         window.setScene(scene3);
                         stop();
                     }
                 }
-            };
+            }
+        };
         gameLoop.start();
 
 
     }
 
     private void loadGame() {
+        screenImage = new Image(getClass().getResource("images/Menu1.png").toExternalForm());
         backgroundImage = new Image(getClass().getResource("images/Background.png").toExternalForm());
+        pauseImage = new Image(getClass().getResource("images/pause.png").toExternalForm());
 
         soldierImage = new Image(getClass().getResource("images/VietCongSoldier.png").toExternalForm());
 
@@ -233,19 +328,24 @@ public class Game extends Application  {
 
         winningImage = new Image(getClass().getResource("images/Victory.png").toExternalForm());
         losingImage = new Image(getClass().getResource("images/GameOver.png").toExternalForm());
-     }
+    }
 
-    private void createBackgroundLayer(){
+    private void createBackgroundLayer() {
         ImageView imgView = new ImageView(backgroundImage);
         backgroundLayer.getChildren().add(imgView);
     }
 
-    /* private void createStartScreen(){
-        ImageView imageView = new ImageView(ScreenImage);
+    private void createStartScreen() {
+        ImageView imageView = new ImageView(screenImage);
         backgroundLayer.getChildren().add(imageView);
-    } */
+    }
 
-    private void createPlayerLayer(){
+    private void createPauseScreen() {
+        ImageView imageView = new ImageView(pauseImage);
+        backgroundLayer.getChildren().add(imageView);
+    }
+
+    private void createPlayerLayer() {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(10.0);
@@ -254,7 +354,7 @@ public class Game extends Application  {
         playFieldLayer.setEffect(dropShadow);
     }
 
-    private void createUILayer(){
+    private void createUILayer() {
         UIText.setFont(Font.font(null, FontWeight.BOLD, 26));
         UIText.setStroke(Color.BLACK);
         UIText.setFill(Color.LIGHTGOLDENRODYELLOW);
@@ -265,9 +365,9 @@ public class Game extends Application  {
     }
 
     private void checkTowerAttack() {
-        for(Tower tower : towers){
-            for(Enemy enemy : enemies){
-                if(tower.hitTarget(enemy)){
+        for (Tower tower : towers) {
+            for (Enemy enemy : enemies) {
+                if (tower.hitTarget(enemy)) {
                     enemy.getDamagedBy(tower);
                 }
             }
@@ -275,12 +375,12 @@ public class Game extends Application  {
 
     }
 
-    public void removeEnemy(List<Enemy> enemyList){
+    public void removeEnemy(List<Enemy> enemyList) {
         Iterator<Enemy> iterator = enemyList.iterator();
-        while( iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
 
-            if( enemy.isRemovable()) {
+            if (enemy.isRemovable()) {
 
                 enemy.removeFromLayer();
 
@@ -290,8 +390,8 @@ public class Game extends Application  {
     }
 
 
-
     int a = 50;
+
     private void spawnEnemies() {
         if (speed <= a) {
             speed++;
@@ -341,7 +441,7 @@ public class Game extends Application  {
         }
 
         // Wave 3
-        if (wave[2]&& a == 50) {
+        if (wave[2] && a == 50) {
             dem++;
             if (dem >= 0 && dem < 10) {
                 Soldier soldier = new Soldier(playFieldLayer, img1, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.soldierVelocity, Properties.soldierMaxHealth);
@@ -364,7 +464,7 @@ public class Game extends Application  {
             }
         }
         // wave 4
-        if (wave[3]&& a == 50) {
+        if (wave[3] && a == 50) {
             dem++;
             if (dem >= 0 && dem < 10) {
                 Soldier soldier = new Soldier(playFieldLayer, img1, Properties.spawnPoint[0][0], Properties.spawnPoint[0][1], Properties.soldierVelocity, Properties.soldierMaxHealth);
@@ -424,14 +524,14 @@ public class Game extends Application  {
     }
 
 
-    private boolean checkTowerLocation(double x, double y, double[][] towerLocation){
+    private boolean checkTowerLocation(double x, double y, double[][] towerLocation) {
         boolean flag = false;
 
         double xCode = x;
         double yCode = y;
-        for(int i = 0; i < towerLocation.length; i++){
-            if(xCode >= towerLocation[i][0] && xCode <= (towerLocation[i][0] + 64)){
-                if (yCode >= towerLocation[i][1] && yCode <= (towerLocation[i][1] + 64)){
+        for (int i = 0; i < towerLocation.length; i++) {
+            if (xCode >= towerLocation[i][0] && xCode <= (towerLocation[i][0] + 64)) {
+                if (yCode >= towerLocation[i][1] && yCode <= (towerLocation[i][1] + 64)) {
                     flag = true;
                     break;
                 }
@@ -440,13 +540,13 @@ public class Game extends Application  {
         return flag;
     }
 
-    private int returnTowerLocation(double x, double y, double[][] towerLocation){
+    private int returnTowerLocation(double x, double y, double[][] towerLocation) {
         int index = 0;
         double xCode = x;
         double yCode = y;
-        for(int i = 0; i < towerLocation.length; i++){
-            if(xCode >= towerLocation[i][0] && xCode <= (towerLocation[i][0] + 64)){
-                if (yCode >= towerLocation[i][1] && yCode <= (towerLocation[i][1] + 64)){
+        for (int i = 0; i < towerLocation.length; i++) {
+            if (xCode >= towerLocation[i][0] && xCode <= (towerLocation[i][0] + 64)) {
+                if (yCode >= towerLocation[i][1] && yCode <= (towerLocation[i][1] + 64)) {
                     index = i;
                     break;
                 }
@@ -456,7 +556,7 @@ public class Game extends Application  {
         return index;
     }
 
-    private void createTowerLevel1(double x, double y){
+    private void createTowerLevel1(double x, double y) {
         Image img = cannonImage;
 
         double xCode = x;
@@ -471,15 +571,15 @@ public class Game extends Application  {
         this.checkTowerLocationHasCannonTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
 
-    private void createTowerLevel2(double x, double y){
+    private void createCannonLevel2(double x, double y) {
         Image img = cannon2Image;
 
         double xCode = x;
         double yCode = y;
 
         //new
-        for(Tower tower : towers){
-            if(tower.getCenterX() == xCode + 32 && tower.getCenterY() == yCode + 32){
+        for (Tower tower : towers) {
+            if (tower.getCenterX() == xCode + 32 && tower.getCenterY() == yCode + 32) {
                 tower.setDamage(Properties.cannonTower2Damage);
                 tower.setRange(Properties.cannonTower2Range);
                 tower.setImage(img);
@@ -489,7 +589,7 @@ public class Game extends Application  {
 
     }
 
-    private void createRocketLevel1(double x, double y){
+    private void createRocketLevel1(double x, double y) {
         double xCode = x;
         double yCode = y;
         Image img = rocketImage;
@@ -503,14 +603,14 @@ public class Game extends Application  {
         this.checkTowerLocationHasRocketTowerLevel1[returnTowerLocation(x, y, Properties.towerLocation)] = true;
     }
 
-    private void createRocketLevel2(double x, double y){
+    private void createRocketLevel2(double x, double y) {
         double xCode = x;
         double yCode = y;
         Image img = rocket2Image;
 
         // new
-        for(Tower tower : towers){
-            if(tower.getCenterX() == xCode + 32 && tower.getCenterY() == yCode + 32){
+        for (Tower tower : towers) {
+            if (tower.getCenterX() == xCode + 32 && tower.getCenterY() == yCode + 32) {
                 tower.setDamage(Properties.rocketTower2Damage);
                 tower.setRange(Properties.rocketTower2Range);
                 tower.setImage(img);
@@ -519,40 +619,40 @@ public class Game extends Application  {
         }
     }
 
-    private void checkEnemyAtDefensePoint(List<Enemy> enemies){
-        for(Enemy enemy : enemies){
-            if(enemy.getY() >= Properties.defensePoint[0][1]){
+    private void checkEnemyAtDefensePoint(List<Enemy> enemies) {
+        for (Enemy enemy : enemies) {
+            if (enemy.getY() >= Properties.defensePoint[0][1]) {
                 heart -= enemy.costLives;
             }
         }
     }
 
-    private void updateUI(){
-        if (waves < 5) UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(waves + 1));
-        if (waves >= 5) UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(5));
+    private void updateUI() {
+        if (waves < 5)
+            UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(waves + 1));
+        if (waves >= 5)
+            UIText.setText("Gold: " + Integer.toString(gold) + "\n" + "Score: " + Integer.toString(score) + "\n" + "Lives: " + Integer.toString(heart) + "\n" + "Wave: " + Integer.toString(5));
     }
 
-    private void increaseGoldAndScore(List<Enemy> enemies){
-        for(Enemy enemy : enemies){
-            if(!enemy.isAlive()){
+    private void increaseGoldAndScore(List<Enemy> enemies) {
+        for (Enemy enemy : enemies) {
+            if (!enemy.isAlive()) {
                 score += enemy.killingScore;
                 gold += enemy.killingGold;
             }
         }
     }
 
-    private boolean checkWinningCondition(){
-        if(waves == 20){
+    private boolean checkWinningCondition() {
+        if (waves == 20) {
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
-    private boolean checkLosingCondition(){
-        if(heart <= 0){
+    private boolean checkLosingCondition() {
+        if (heart <= 0) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
