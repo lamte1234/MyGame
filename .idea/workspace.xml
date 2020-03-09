@@ -125,7 +125,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574343771729</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="deo lam nua">
+      <created>1574755130717</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1574755130717</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -146,6 +153,7 @@
     <MESSAGE value="hjkhj" />
     <MESSAGE value="spawn enemys" />
     <MESSAGE value="2 lv of each tower" />
-    <option name="LAST_COMMIT_MESSAGE" value="2 lv of each tower" />
+    <MESSAGE value="deo lam nua" />
+    <option name="LAST_COMMIT_MESSAGE" value="deo lam nua" />
   </component>
 </project>
